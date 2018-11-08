@@ -1,31 +1,92 @@
-// City One - Cheney
+//primary
 $.simpleWeather({
-  location: 99004,
+  location: 99224,
   success: function(weather) {
-     
-     $('#city-one h2').text(weather.city);
-     $('#city-one .image img').attr( 'src', weather.image  );
-     $('#city-one .temp').text(weather.temp);
-     $('#city-one .time').text(weather.updated);
-  
-  }, 
+     //console.log(weather.image);
+    //console.log(weather.city);
+    //console.log(weather.temp);
+    //console.log(weather.updated);
+     $('.image img').attr('src', weather.image);
+    $('.city').text(weather.city);
+    $('.temp').text(weather.temp);
+    $('.time').text(weather.updated);
+   }, 
   error: function(error) {
     console.log('Go outside!');
   }
+}); 
+//secondary
+$.simpleWeather({
+location: 23665,
+success: function(weather) {
+  $('#secondary .image img').attr('src', weather.image);
+  $('#secondary .city').text(weather.city);
+  $('#secondary .temp').text(weather.temp);
+  $('#secondary .time').text(weather.updated);
+ }, 
+error: function(error) {
+  console.log('Go outside!');
+}
 });
+//geolocation
+// Geolocation Check
+if ( 'geolocation' in navigator ) {
 
-// City Two - Hilo
-$.simpleWeather({
-  location: 96720,
-  success: function(weather) {
-     
-     $('#city-two h2').text(weather.city);
-     $('#city-two .image img').attr( 'src', weather.image  );
-     $('#city-two .temp').text(weather.temp);
-     $('#city-two .time').text(weather.updated);
+$('#geolocation').show();
+
+} else {
+
+$('#geolocation *').hide();
+$('#geolocation').html('<p>Not Available</p>');
+
+}
+// Get Weather
+$('button').click( function(){
+
+navigator.geolocation.getCurrentPosition(function(position) {
+ 
+ // Check lat/long coordinates
+ var lat = position.coords.latitude;
+ var long = position.coords.longitude;
+ 
+ //console.log(lat, long);
+ 
+ // Get Weather
+ getWeather( lat + ',' + long );
   
-  }, 
-  error: function(error) {
-    console.log('Go outside!');
-  }
 });
+});
+// Define Get Weather
+var getWeather = function( position ) {
+console.log(location);
+$.simpleWeather({
+location: location,
+unit: 'f',
+success: function(weather) {
+ 
+
+ 
+ // Display Data
+  $('#geolocation .image img').attr('src', weather.image);
+  $('#geolocation .city').text(weather.city);
+  $('#geolocation .temp').text(weather.temp);
+  $('#geolocation .time').text(weather.updated);
+},
+error: function(error) {
+ // Show if weather cannot be retreived
+ console.log('Look Outside.');
+}
+});
+};
+//$.simpleWeather({
+//location: location,
+//success: function(weather) {
+   //$('#geolocation .image img').attr('src', weather.image);
+  //$('#geolocation .city').text(weather.city);
+  //$('#geolocation .temp').text(weather.temp);
+  //$('#geolocation .time').text(weather.updated);
+ //}, 
+//error: function(error) {
+  //console.log('Go outside!');
+//}
+//}); 
